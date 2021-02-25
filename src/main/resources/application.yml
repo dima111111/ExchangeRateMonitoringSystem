@@ -1,0 +1,16 @@
+#Rate Currency properties
+rate.service:
+  url : http://openexchangerates.org/api/
+  latest : latest.json?app_id=
+  historical_before : historical/
+  historical_after : .json?app_id=
+  app_id : b0609eaa2b8e415e9f4edc86f2fb884d
+  base_cur : USD
+
+#Giphy properties
+giphy.service:
+  url : api.giphy.com/v1/gifs/search
+  app_id : tshHfDA8I3nqIQWDq4VBw36sy6sgqcI5
+  max_gif_count : 100
+  rich : rich
+  broke : broke

@@ -1,0 +1,7 @@
+#Rate Currency properties
+rate.service:
+  url : http://localhost:9561
+
+#Giphy properties
+giphy.service:
+  url : http://localhost:9562

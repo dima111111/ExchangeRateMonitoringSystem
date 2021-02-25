@@ -57,16 +57,22 @@ public class MainController {
     @RequestMapping("/rate/history/{id}")
     public String rateHistory(@PathVariable("id") String id) {
 
-        Double currentCourse = serviceRateClient.getDataLatest(id).getRates().get(id);
-        Double previousCourse = serviceRateClient.getDataHistorical(getYesterdayDateString(), id).getRates().get(id);
+        try {
+            Double currentCourse = serviceRateClient.getDataLatest(id).getRates().get(id);
+            Double previousCourse = serviceRateClient.getDataHistorical(getYesterdayDateString(), id).getRates().get(id);
 
-        int randomNumber = (int) (Math.random() * MAX_GIF_COUNT);
-        GifObject gif;
-        if (currentCourse > previousCourse) {
-            gif = serviceGiphyClient.searchGif(RICH, randomNumber).getGifObject();
-        } else {
-            gif = serviceGiphyClient.searchGif(BROKE, randomNumber).getGifObject();
+            int randomNumber = (int) (Math.random() * MAX_GIF_COUNT);
+            GifObject gif;
+            if (currentCourse > previousCourse) {
+                gif = serviceGiphyClient.searchGif(RICH, randomNumber).getGifObject();
+            } else {
+                gif = serviceGiphyClient.searchGif(BROKE, randomNumber).getGifObject();
+            }
+            return "<iframe src=\"" + gif.getUrl() + "\" width=\"800\" height=\"600\" frameBorder=\"0\" style=\"margin: 0 auto;display: block;\"></iframe>";
+        } catch (Exception e) {
+            // TODO to log error
+            e.printStackTrace();
+            return "Возникла ошибка при работе сервиса";
         }
-        return "<iframe src=\"" + gif.getUrl() + "\" width=\"800\" height=\"600\" frameBorder=\"0\" style=\"margin: 0 auto;display: block;\"></iframe>";
     }
 }
