@@ -34,6 +34,11 @@ public class MainController {
     @Value("${rate.service.base_cur}")
     String BASE_CUR;
 
+    /**
+     * Information about base currency exchange rate
+     * @param id currency code
+     * @return String - base currency exchange rate today and yesterday
+     */
     @RequestMapping("/rate/{id}")
     public String rate(@PathVariable("id") String id) {
         Double currentCourse = serviceRateClient.getDataLatest(id).getRates().get(id);
@@ -42,18 +47,31 @@ public class MainController {
                 "Вчерашний курс по отношению к базовой валюте " + BASE_CUR + " валюты " + id + " составляет " + previousCourse ;
     }
 
+    /**
+     * @return Yesterday Date representing the time value
+     */
     private static Date yesterday() {
         final Calendar cal = Calendar.getInstance();
         cal.add(Calendar.DATE, -1);
         return cal.getTime();
     }
 
+    /**
+     * @return String - formatted yyyy-MM-dd date-time string of yesterday
+     */
     private static String getYesterdayDateString() {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
         return dateFormat.format(yesterday());
     }
 
+    /**
+     * Main method that get rates and then returns rich gif if today's rate is greater than yesterday
+     * and else return broke gif
+     * If services are unavailable returns error message
+     * @param id
+     * @return String result
+     */
     @RequestMapping("/rate/history/{id}")
     public String rateHistory(@PathVariable("id") String id) {
 
